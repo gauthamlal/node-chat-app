@@ -14,8 +14,13 @@ socket.on('newMessage', function (message) {
 
   document.querySelector('#messages').append(html);*/
 
+  let formattedTime = moment(message.createdAt).format('h:mm a');
   let template = document.getElementById('message-template').innerHTML;
-  let html = Mustache.render(template);
+  let html = Mustache.render(template, {
+    text: message.text,
+    from: message.from,
+    createdAt: formattedTime
+  });
   document.getElementById('messages').innerHTML += html;
 
   /*let template = jQuery('#message-template').html();
@@ -32,7 +37,16 @@ socket.on('newMessage', function (message) {
 
 socket.on('newLocationMessage', function (message) {
   let formattedTime = moment(message.createdAt).format('h:mm a');
-  let li = document.createElement('li');
+  let template = document.getElementById('location-message-template').innerHTML;
+  let html = Mustache.render(template, {
+    from: message.from,
+    url: message.url,
+    createdAt: formattedTime
+  });
+
+  document.getElementById('messages').innerHTML += html;
+
+  /*let li = document.createElement('li');
   let a = document.createElement('a');
   a.innerText = 'My current Location'
   li.innerText = `${message.from} ${formattedTime}: `;
@@ -40,7 +54,7 @@ socket.on('newLocationMessage', function (message) {
   a.setAttribute('href', message.url);
 
   li.append(a);
-  document.querySelector('#messages').append(li);
+  document.querySelector('#messages').append(li);*/
 });
 
 document.querySelector('#message-form').addEventListener('submit', function (e) {
