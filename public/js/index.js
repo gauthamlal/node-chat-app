@@ -9,11 +9,25 @@ socket.on('disconnect', function () {
 });
 
 socket.on('newMessage', function (message) {
-  let formattedTime = moment(message.createdAt).format('h:mm a');
+  /*let template = document.querySelector('#message-template').textContent;
+  let html = Mustache.render(template);
+
+  document.querySelector('#messages').append(html);*/
+
+  let template = document.getElementById('message-template').innerHTML;
+  let html = Mustache.render(template);
+  document.getElementById('messages').innerHTML += html;
+
+  /*let template = jQuery('#message-template').html();
+  let html = Mustache.render(template);
+
+  jQuery('#messages').append(html);*/
+
+  /*let formattedTime = moment(message.createdAt).format('h:mm a');
   let li = document.createElement('li');
   li.innerText = `${message.from} ${formattedTime}: ${message.text}`;
 
-  document.querySelector('#messages').append(li);
+  document.querySelector('#messages').append(li);*/
 });
 
 socket.on('newLocationMessage', function (message) {
