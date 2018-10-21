@@ -1,5 +1,37 @@
 let socket = io();
 
+function scrollToBottom () {
+  // selectors
+  let messages = document.getElementById('messages');
+  console.log(messages);
+  /*let listChildren = messages.getElementsByTagName('li');
+  let length = listChildren.length;
+  console.log(length);*/
+  let newMessage = document.querySelector('#messages li:last-child');
+  console.log(newMessage.clientHeight);
+  // heights
+  let clientHeight = messages.clientHeight;
+  console.log('clientHeight', clientHeight);
+  let scrollTop = messages.scrollTop;
+  console.log('scrollTop', scrollTop);
+  let scrollHeight = messages.scrollHeight;
+  console.log('scrollHeight', scrollHeight);
+  let newMessageHeight = newMessage.clientHeight;
+  console.log('newMessageHeight', newMessageHeight);
+  let lastMessageHeight;
+  if (newMessage.previousElementSibling) {
+    lastMessageHeight = newMessage.previousElementSibling.clientHeight;
+  } else {
+    lastMessageHeight = 0;
+  }
+  console.log('lastMessageHeight', lastMessageHeight);
+
+
+  if (clientHeight + scrollTop + newMessageHeight + lastMessageHeight >= scrollHeight) {
+    messages.scrollTop = scrollHeight;
+  }
+};
+
 socket.on('connect', function () {
   console.log('Connected to server');
 });
@@ -23,6 +55,8 @@ socket.on('newMessage', function (message) {
   });
   document.getElementById('messages').innerHTML += html;
 
+  scrollToBottom();
+
   /*let template = jQuery('#message-template').html();
   let html = Mustache.render(template);
 
@@ -45,6 +79,8 @@ socket.on('newLocationMessage', function (message) {
   });
 
   document.getElementById('messages').innerHTML += html;
+
+  scrollToBottom();
 
   /*let li = document.createElement('li');
   let a = document.createElement('a');
