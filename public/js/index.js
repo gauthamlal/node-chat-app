@@ -10,8 +10,18 @@ socket.on('disconnect', function () {
 
 socket.on('newMessage', function (message) {
   console.log('New Message!', message);
+  let li = document.createElement('li');
+  li.innerText = `${message.from}: ${message.text}`;
+
+  document.querySelector('#messages').append(li);
 });
 
-socket.on('fromAdmin', function (message) {
-  console.log('From Admin:', message);
+document.querySelector('#message-form').addEventListener('submit', function (e) {
+  e.preventDefault();
+  socket.emit('createMessage', {
+    from: 'User',
+    text: document.querySelector('input[name=message]').value
+  }, function () {
+
+  });
 });
