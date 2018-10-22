@@ -8,7 +8,7 @@ function scrollToBottom () {
   let length = listChildren.length;
   console.log(length);*/
   let newMessage = document.querySelector('#messages li:last-child');
-  console.log(newMessage.clientHeight);
+  console.log('newMessage.innerHeight', newMessage.innerHeight);
   // heights
   let clientHeight = messages.clientHeight;
   console.log('clientHeight', clientHeight);
@@ -17,7 +17,7 @@ function scrollToBottom () {
   let scrollHeight = messages.scrollHeight;
   console.log('scrollHeight', scrollHeight);
   let newMessageHeight = newMessage.clientHeight;
-  console.log('newMessageHeight', newMessageHeight);
+  console.log('newMessageHeight.clientHeight', newMessageHeight);
   let lastMessageHeight;
   if (newMessage.previousElementSibling) {
     lastMessageHeight = newMessage.previousElementSibling.clientHeight;
