@@ -3,28 +3,28 @@ let socket = io();
 function scrollToBottom () {
   // selectors
   let messages = document.getElementById('messages');
-  console.log(messages);
+  // console.log(messages);
   /*let listChildren = messages.getElementsByTagName('li');
   let length = listChildren.length;
   console.log(length);*/
   let newMessage = document.querySelector('#messages li:last-child');
-  console.log('newMessage.innerHeight', newMessage.innerHeight);
+  // console.log('newMessage.innerHeight', newMessage.innerHeight);
   // heights
   let clientHeight = messages.clientHeight;
-  console.log('clientHeight', clientHeight);
+  // console.log('clientHeight', clientHeight);
   let scrollTop = messages.scrollTop;
-  console.log('scrollTop', scrollTop);
+  // console.log('scrollTop', scrollTop);
   let scrollHeight = messages.scrollHeight;
-  console.log('scrollHeight', scrollHeight);
+  // console.log('scrollHeight', scrollHeight);
   let newMessageHeight = newMessage.clientHeight;
-  console.log('newMessageHeight.clientHeight', newMessageHeight);
+  // console.log('newMessageHeight.clientHeight', newMessageHeight);
   let lastMessageHeight;
   if (newMessage.previousElementSibling) {
     lastMessageHeight = newMessage.previousElementSibling.clientHeight;
   } else {
     lastMessageHeight = 0;
   }
-  console.log('lastMessageHeight', lastMessageHeight);
+  // console.log('lastMessageHeight', lastMessageHeight);
 
 
   if (clientHeight + scrollTop + newMessageHeight + lastMessageHeight >= scrollHeight) {
@@ -33,11 +33,35 @@ function scrollToBottom () {
 };
 
 socket.on('connect', function () {
-  console.log('Connected to server');
+  let params = deparam(window.location.search);
+
+  socket.emit('join', params, function (err) {
+    if (err) {
+      alert(err);
+      window.location.href='/';
+    } else {
+      console.log('No error');
+    }
+  });
 });
 
 socket.on('disconnect', function () {
   console.log('Disconnected from the server');
+});
+
+socket.on('updateUserList', function (users) {
+  let ol = document.createElement('ol');
+
+  users.forEach(function (user) {
+    console.log(user);
+    let li = document.createElement('li');
+    li.innerText = user;
+    console.log(li);
+    ol.appendChild(li);
+    console.log(ol);
+  });
+  document.querySelector('#users').innerHTML = '';
+  document.querySelector('#users').appendChild(ol);
 });
 
 socket.on('newMessage', function (message) {
